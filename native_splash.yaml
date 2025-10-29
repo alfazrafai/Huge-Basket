@@ -1,0 +1,39 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  # Background colors
+  color: "#FFFFFF"
+  color_dark: "#272727"
+
+  # Light & dark mode images
+  image: assets/logos/logoimage.png
+  image_dark: assets/logos/logo_light.png
+
+  # IMPORTANT: Prevent cropping
+  #dart run flutter_native_splash:create --path=native_splash.yamlfill_crop: false
+
+  # Center the image (Android)
+  android_gravity: center
+
+  # Scale to fit within bounds (iOS)
+  ios_content_mode: scaleAspectFit
+
+  # Fullscreen splash
+  fullscreen: true
+
+  # Android 12+ specific fixes
+  android_12:
+    image: assets/logos/logoimage.png
+    image_dark: assets/logos/logo_light.png
+    color: "#FFFFFF"
+    color_dark: "#272727"
+
+    # Critical: Disable icon mask & branding
+    icon_background_color: "#FFFFFF"  # Match your background
+    icon_background_color_dark: "#272727"
+    branding: null  # Removes bottom branding space
+
+    # This is KEY to prevent circular/rounded cropping on Android 12+
+    # Use a transparent PNG with alpha if needed, but better: use fill_crop: false globally
