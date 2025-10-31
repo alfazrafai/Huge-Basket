@@ -8,6 +8,7 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final List<Widget>? actions;
   final Color backgroundColor;
+  final Color titleColors;
 
   const HBAppBar({
     super.key,
@@ -15,6 +16,7 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.showBackButton = true,
     this.actions,
     this.backgroundColor = HBColors.white,
+    this.titleColors = HBColors.black,
   });
 
   @override
@@ -29,16 +31,28 @@ class HBAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: showBackButton
             ? IconButton(
                 onPressed: () => Get.back(),
-                icon: const Icon(Iconsax.arrow_left_2, color: Colors.black),
+                icon: Icon(Iconsax.arrow_left_2, color: titleColors),
               )
             : null,
         title: Text(
           title,
           style: Theme.of(
             context,
-          ).textTheme.headlineSmall?.copyWith(color: HBColors.primary),
+          ).textTheme.headlineSmall?.copyWith(color: titleColors),
         ),
-        actions: actions,
+        actions: actions != null
+            ? actions!
+                  .map(
+                    (action) => IconTheme(
+                      data: IconThemeData(color: titleColors),
+                      child: DefaultTextStyle(
+                        style: TextStyle(color: titleColors),
+                        child: action,
+                      ),
+                    ),
+                  )
+                  .toList()
+            : null,
       ),
     );
   }

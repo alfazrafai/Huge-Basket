@@ -12,4 +12,9 @@ class HBImages {
       "assets/images/onboarding_images/onboarding_second.png";
   static const String onBoardingImage3 =
       "assets/images/onboarding_images/oneboarding_one.png";
+
+  // shop
+
+  static const String walmartBackgroundImage =
+      "assets/images/shop/walmart_background_image.jpg";
 }

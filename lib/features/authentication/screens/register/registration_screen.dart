@@ -23,75 +23,26 @@ class RegistrationScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 50.h),
-              Text(
-                HBTexts.verificationText,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  height: 1.5,
-                  color: Colors.black,
-                ),
-              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Business name',
 
-              SizedBox(height: 27.h),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: SizedBox(
-                  width: 251.w,
-                  child: PinCodeTextField(
-                    appContext: context,
-                    length: 4,
-                    keyboardType: TextInputType.number,
-                    cursorColor: HBColors.primary,
-                    animationType: AnimationType.scale,
-                    enableActiveFill: true,
-                    textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    hintCharacter: '-',
-                    hintStyle: TextStyle(
-                      color: Colors.grey.shade400,
-                      fontSize: 22,
-                    ),
-                    pinTheme: PinTheme(
-                      shape: PinCodeFieldShape.circle,
-                      fieldHeight: 50.h,
-                      fieldWidth: 50.h,
-                      borderRadius: BorderRadius.circular(50),
-                      activeFillColor: Colors.grey.shade100,
-                      inactiveFillColor: Colors.grey.shade100,
-                      selectedFillColor: Colors.grey.shade100,
-                      activeColor: Colors.transparent,
-                      inactiveColor: Colors.transparent,
-                      selectedColor: HBColors.primary.withOpacity(0.4),
-                    ),
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    animationDuration: const Duration(milliseconds: 200),
-                    onChanged: (value) {},
-                    onCompleted: (value) {
-                      print("OTP Completed: $value");
-                    },
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50.r),
                   ),
-                ),
-              ),
-              SizedBox(height: 70.h),
-              HBPrimaryButton(buttonText: "Verify", onTap: () => {}),
-              SizedBox(height: 30.h),
-              TextButtonWithUnderLine(text: 'Resend', onTap: () {}),
-              SizedBox(height: 50.h),
-              Container(
-                height: 200.h,
-                width: 180.w,
-                child: Opacity(
-                  opacity: 0.3,
-                  child: Image.asset(
-                    HBImages.lightAppLogo,
-                    height: 100,
-                    width: 100,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.blue, width: 2),
                   ),
+                  errorStyle: TextStyle(color: Colors.redAccent),
                 ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Email can’t be empty';
+                  }
+                  return null;
+                },
               ),
             ],
           ),

@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
       }
 
       // Navigator.pushReplacementNamed(context, '/home');
-      Get.offNamed(HBRoutes.phoneVerification);
+      Get.offNamed(HBRoutes.categorySubCategory);
     }
 
     return Scaffold(
@@ -102,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-              HBPrimaryButton(onTap: handleLogin,buttonText: "Login",),
+              HBPrimaryButton(onTap: handleLogin, buttonText: "Login"),
             ],
           ),
         ),
@@ -110,5 +110,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
-
