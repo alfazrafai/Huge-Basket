@@ -68,4 +68,8 @@ class HBTexts {
   // -- Home
   static const String homeAppbarTitle = "Good day for shopping";
   static const String homeAppbarSubTitle = "Abdul Haseeb";
+
+  // Verification
+  static const String verificationText =
+      "Verification code has been send on your\nregistered mobile number. Enter\n Verification code here";
 }

@@ -26,7 +26,8 @@ class HomeScreen extends StatelessWidget {
         "category": "Grocery and General",
         "distance": "2 mile",
         "address": "3456 Washington Street, Us, 4568",
-        "image": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e",
+        "image":
+            "https://images.squarespace-cdn.com/content/v1/5d07a4816460ff000144d4b5/1605052887151-KXNVRJJNA6KEZTH42727/Handmag-Product-Photography-by-Jinnifer-Douglass-001.jpg",
       },
       {
         "name": "Safeway",

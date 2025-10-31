@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:huge_basket/routes/routes.dart';
 import 'package:huge_basket/utils/constant/image_strings.dart';
 
+import '../../../../common/widgets/button/HBPrimaryButton.dart';
 import '../../../../utils/constant/colors.dart';
 import '../../../../utils/helpers/helper_funtion.dart';
 
@@ -38,8 +40,8 @@ class LoginScreen extends StatelessWidget {
         return;
       }
 
-      Navigator.pushReplacementNamed(context, '/home');
-      Get.offNamed('/home');
+      // Navigator.pushReplacementNamed(context, '/home');
+      Get.offNamed(HBRoutes.phoneVerification);
     }
 
     return Scaffold(
@@ -100,18 +102,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                    ),
-                  ),
-                  onPressed: handleLogin,
-                  child: const Text("Login"),
-                ),
-              ),
+              HBPrimaryButton(onTap: handleLogin,buttonText: "Login",),
             ],
           ),
         ),
@@ -119,3 +110,5 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+
+

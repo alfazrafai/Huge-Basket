@@ -6,20 +6,16 @@ import '../../screens/login/login_screen.dart';
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();
 
-  /// Variables
   PageController pageController = PageController();
   RxInt currentIndex = 0.obs;
 
-  /// Update current index when page scroll
   void updatePageIndicator(index) => currentIndex.value = index;
 
-  /// Jump to specific dot  selected page
   void dotNavigationClick(index) {
     currentIndex.value = index;
     pageController.jumpToPage(index);
   }
 
-  /// Update current index and jump to the next page
   void nextPage() {
     if (currentIndex.value == 2) {
       GetStorage storage = GetStorage();
@@ -31,7 +27,6 @@ class OnBoardingController extends GetxController {
     }
   }
 
-  /// Update current index and jump to the last page
   void skipPage() {
     currentIndex.value = 2;
     pageController.jumpToPage(currentIndex.value);
