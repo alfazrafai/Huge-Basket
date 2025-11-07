@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../images/HBCircularImage.dart';
 
 class HBImageWithText extends StatelessWidget {
-  const HBImageWithText({
+  HBImageWithText({
     super.key,
     required this.image,
     required this.categoryName,

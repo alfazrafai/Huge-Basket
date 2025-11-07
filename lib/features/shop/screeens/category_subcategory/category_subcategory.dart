@@ -71,7 +71,6 @@ class CategorySubcategory extends StatelessWidget {
               ),
             ),
 
-            // 🟨 CATEGORY SECTION
             Container(
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
@@ -93,19 +92,18 @@ class CategorySubcategory extends StatelessWidget {
                         itemCount: categoryController.categories.length,
                         itemBuilder: (context, index) {
                           final category = categoryController.categories[index];
-                          final isSelected =
-                              categoryController.selectedCategory.value ==
-                              category.name;
 
                           return Padding(
                             padding: EdgeInsets.only(right: 12.w),
-                            child: HBImageWithText(
-                              key: ValueKey(category.name),
-                              image: category.categoryImage,
-                              categoryName: category.name,
-                              isSelected: isSelected,
-                              onTap: () => categoryController.changeCategory(
-                                category.name,
+                            child: Obx(
+                              () => HBImageWithText(
+                                image: category.categoryImage,
+                                categoryName: category.name,
+                                isSelected: category
+                                    .isSelected
+                                    .value, // ✅ direct from model
+                                onTap: () =>
+                                    categoryController.changeCategory(category),
                               ),
                             ),
                           );
@@ -116,6 +114,8 @@ class CategorySubcategory extends StatelessWidget {
                 ],
               ),
             ),
+
+            SizedBox(height: 10.h),
 
             Container(
               width: double.infinity,
@@ -129,7 +129,7 @@ class CategorySubcategory extends StatelessWidget {
 
                   Obx(() {
                     final subcategories =
-                        categoryController.selectedSubCategory;
+                        categoryController.selectedSubCategories;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: subcategories.map((sub) {

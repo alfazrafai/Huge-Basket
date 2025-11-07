@@ -1,6 +1,4 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-
+import 'package:get/get.dart';
 import '../../../utils/constant/image_strings.dart';
 import '../models/category_model.dart';
 
@@ -14,35 +12,43 @@ class CategoryController extends GetxController {
     CategoryModel(
       categoryImage: HBImages.walmartBackgroundImage,
       name: "Snacks",
-      subCategory: ['Oil', 'Butter Milk', 'Dahi'],
+      subCategory: ['Oil', 'Chips', 'Cookies'],
     ),
     CategoryModel(
       categoryImage: HBImages.walmartBackgroundImage,
       name: "Seafood",
-      subCategory: ['Cake', 'Butter Milk', 'Dahi'],
+      subCategory: ['Fish', 'Prawns', 'Crab'],
     ),
     CategoryModel(
       categoryImage: HBImages.walmartBackgroundImage,
       name: "Frozen Foods",
-      subCategory: ['Cake', 'Butter Milk', 'Dahi'],
+      subCategory: ['Ice Cream', 'Pizza', 'Fries'],
     ),
     CategoryModel(
       categoryImage: HBImages.walmartBackgroundImage,
-      name: "Item",
-      subCategory: ['Cake', 'Butter Milk', 'Dahi'],
+      name: "Beverages",
+      subCategory: ['Juice', 'Soda', 'Water'],
     ),
   ].obs;
 
-  var selectedCategory = 'Item'.obs;
+  var selectedSubCategories = <String>[].obs;
 
-  List<String> get selectedSubCategory {
-    return categories
-        .firstWhere((c) => c.name == selectedCategory.value)
-        .subCategory;
+  @override
+  void onInit() {
+    super.onInit();
+
+    //  Select the first category by default
+    if (categories.isNotEmpty) {
+      categories.first.isSelected.value = true;
+      selectedSubCategories.value = categories.first.subCategory;
+    }
   }
 
-  void changeCategory(String newCategory) {
-    selectedCategory.value = newCategory;
-    print('Selected Category: $newCategory');
+  void changeCategory(CategoryModel selected) {
+    for (final category in categories) {
+      category.isSelected.value = false; // reset all
+    }
+    selected.isSelected.value = true; // select this one
+    selectedSubCategories.value = selected.subCategory;
   }
 }
