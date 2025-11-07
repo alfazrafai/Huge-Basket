@@ -20,7 +20,7 @@ class AppRoutes {
     GetPage(name: HBRoutes.register, page: () => const RegistrationScreen()),
     GetPage(
       name: HBRoutes.categorySubCategory,
-      page: () => const CategorySubcategory(),
+      page: () => CategorySubcategory(),
     ),
   ];
 }
