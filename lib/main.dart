@@ -5,7 +5,11 @@ import 'package:huge_basket/features/authentication/screens/onboarding/onboardin
 import 'package:huge_basket/routes/app_routes.dart';
 import 'package:huge_basket/utils/theme/theme.dart';
 
+import 'features/cart/controller/CartController.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Get.put(CartController());
   runApp(HugeBasket());
 }
 

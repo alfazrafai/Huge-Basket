@@ -6,6 +6,7 @@ import 'package:huge_basket/common/widgets/image_text/image_with_text.dart';
 import 'package:huge_basket/utils/constant/colors.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../../common/widgets/card/productCard.dart';
 import '../../../../common/widgets/containers/HBPrimaryHeaderContainer.dart';
 import '../../../../common/widgets/images/HBCircleAvatarImage.dart';
 import '../../../../common/widgets/text/title_text_with_more_option.dart';
@@ -13,14 +14,15 @@ import '../../../../common/widgets/textfields/HBSerachTextField.dart';
 import '../../../../utils/constant/image_strings.dart';
 import '../../controller/CategoryController.dart';
 import '../../models/productModel.dart';
+import '../product/subcategory_product_screen.dart';
 
 class CategorySubcategory extends StatelessWidget {
   CategorySubcategory({super.key});
 
   final CategoryController categoryController = Get.put(CategoryController());
 
-  final List<Product> products =
-      []; // not used here, just keeping for reference
+  // final List<Product> products =
+  //     []; // not used here, just keeping for reference
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +41,9 @@ class CategorySubcategory extends StatelessWidget {
                   HBAppBar(
                     title: "Walmart",
                     backgroundColor: Colors.transparent,
-                    titleColors: HBColors.white,
-                    actions: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Iconsax.shopping_cart),
-                      ),
-                    ],
+                    titleColor: Colors.white,
+                    iconColor: Colors.white,
+                    showCart: true, // ✅ shows badge
                   ),
                   SizedBox(height: 10.h),
                   HBCircleAvatarImage(
@@ -115,46 +113,124 @@ class CategorySubcategory extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 10.h),
+            SizedBox(height: 20.h),
 
             Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20.w),
               color: HBColors.primaryGreenBackground,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TitleTextWithMoreOption(titleName: 'Subcategories'),
-                  SizedBox(height: 12.h),
+              child: Obx(() {
+                final selected = categoryController.selectedCategory.value;
+                if (selected == null) return const SizedBox();
 
-                  Obx(() {
-                    final subcategories =
-                        categoryController.selectedSubCategories;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: subcategories.map((sub) {
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 8.h),
-                          padding: EdgeInsets.all(12.h),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12.r),
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: selected.subCategories.map((subCat) {
+                      // ✅ if more than one product, show "More >"
+                      final hasMore = subCat.products.length > 1;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 10.h),
+
+                          /// 🧱 Reusable TitleTextWithMoreOption widget
+                          TitleTextWithMoreOption(
+                            titleName: subCat.name,
+                            moreText: hasMore
+                                ? 'More >'
+                                : null, // hide when not needed
+                            onTap: hasMore
+                                ? () {
+                                    Get.to(
+                                      () => SubCategoryProductScreen(
+                                        subCategoryName: subCat.name,
+                                        products: subCat.products,
+                                      ),
+                                    );
+                                  }
+                                : null,
                           ),
-                          child: Text(
-                            sub,
-                            style: Theme.of(context).textTheme.bodyMedium!
-                                .copyWith(color: HBColors.black),
+
+                          SizedBox(height: 5.h),
+
+                          /// 🧱 Product horizontal list (limit to 5 for preview)
+                          SizedBox(
+                            height: 220.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: subCat.products.length > 5
+                                  ? 6 // show 5 + 1 "More" card
+                                  : subCat.products.length,
+                              itemBuilder: (context, index) {
+                                // 🧠 If index < 5 → show product card
+                                if (index < 5 &&
+                                    index < subCat.products.length) {
+                                  final product = subCat.products[index];
+                                  return HBProductCard(product: product);
+                                }
+
+                                if (index == 5 && subCat.products.length > 5) {
+                                  return _buildMoreCard(
+                                    context,
+                                    subCat.name,
+                                    subCat.products,
+                                  );
+                                }
+
+                                return const SizedBox.shrink();
+                              },
+                            ),
                           ),
-                        );
-                      }).toList(),
-                    );
-                  }),
-                ],
-              ),
+
+                          SizedBox(height: 20.h),
+
+                          SizedBox(height: 20.h),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                );
+              }),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+Widget _buildMoreCard(
+  BuildContext context,
+  String subCategoryName,
+  List<ProductModel> products,
+) {
+  return GestureDetector(
+    onTap: () {
+      Get.to(
+        () => SubCategoryProductScreen(
+          subCategoryName: subCategoryName,
+          products: products,
+        ),
+      );
+    },
+    child: Container(
+      width: 45.w,
+      height: 45.h,
+      margin: EdgeInsets.only(right: 12.w, top: 12.h),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: HBColors.primary.withOpacity(0.1),
+        border: Border.all(color: HBColors.primary, width: 2),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.arrow_forward, color: HBColors.primary, size: 32),
+          ],
+        ),
+      ),
+    ),
+  );
 }

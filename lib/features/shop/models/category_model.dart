@@ -1,15 +1,16 @@
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get.dart';
+import 'package:huge_basket/features/shop/models/subCategoryModel.dart';
 
 class CategoryModel {
-  final String categoryImage;
   final String name;
-  final List<String> subCategory;
+  final String categoryImage;
+  final List<SubCategoryModel> subCategories;
   RxBool isSelected = false.obs;
 
   CategoryModel({
-    required this.categoryImage,
     required this.name,
-    required this.subCategory,
+    required this.categoryImage,
+    required this.subCategories,
     bool isSelected = false,
   }) {
     this.isSelected.value = isSelected;

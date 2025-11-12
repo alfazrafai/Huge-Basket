@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
       }
 
       // Navigator.pushReplacementNamed(context, '/home');
-      Get.offNamed(HBRoutes.categorySubCategory);
+      Get.offNamed(HBRoutes.phoneVerification);
     }
 
     return Scaffold(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:huge_basket/navigation_bar.dart';
 import '../../screens/login/login_screen.dart';
 
 class OnBoardingController extends GetxController {
@@ -29,6 +30,6 @@ class OnBoardingController extends GetxController {
 
   void skipPage() {
     currentIndex.value = 2;
-    pageController.jumpToPage(currentIndex.value);
+    Get.offAll(const LoginScreen());
   }
 }

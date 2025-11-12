@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:huge_basket/common/widgets/button/HBPrimaryButton.dart';
 import 'package:huge_basket/utils/constant/colors.dart';
 import 'package:huge_basket/utils/constant/image_strings.dart';
@@ -12,8 +11,36 @@ import '../../../../common/widgets/button/HBTextButtonWithUnderline.dart';
 import '../../../../routes/routes.dart';
 import '../../../../utils/constant/text_string.dart';
 
-class PhoneNumberVarificationScreen extends StatelessWidget {
+class PhoneNumberVarificationScreen extends StatefulWidget {
   const PhoneNumberVarificationScreen({super.key});
+
+  @override
+  State<PhoneNumberVarificationScreen> createState() =>
+      _PhoneNumberVarificationScreenState();
+}
+
+class _PhoneNumberVarificationScreenState
+    extends State<PhoneNumberVarificationScreen> {
+  final TextEditingController _otpController = TextEditingController();
+  final String _correctOTP = "2211";
+
+  void _verifyOTP() {
+    final enteredOTP = _otpController.text.trim();
+
+    if (enteredOTP == _correctOTP) {
+      Get.offNamed(HBRoutes.navigationMain);
+    } else {
+      Get.snackbar(
+        "Invalid OTP",
+        "Please enter the correct verification code.",
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.redAccent,
+        icon: const Icon(Icons.error_outline, color: Colors.redAccent),
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(12),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +53,8 @@ class PhoneNumberVarificationScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 50.h),
+
+              // Instruction text
               Text(
                 HBTexts.verificationText,
                 textAlign: TextAlign.center,
@@ -38,12 +67,15 @@ class PhoneNumberVarificationScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 27.h),
+
+              // OTP Field
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: SizedBox(
                   width: 251.w,
                   child: PinCodeTextField(
                     appContext: context,
+                    controller: _otpController,
                     length: 4,
                     keyboardType: TextInputType.number,
                     cursorColor: HBColors.primary,
@@ -73,30 +105,45 @@ class PhoneNumberVarificationScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     animationDuration: const Duration(milliseconds: 200),
                     onChanged: (value) {},
-                    onCompleted: (value) {
-                      print("OTP Completed: $value");
-                    },
+                    onCompleted: (value) => _verifyOTP(),
                   ),
                 ),
               ),
+
               SizedBox(height: 70.h),
+
+              // Verify Button
               HBPrimaryButton(
                 buttonText: "Verify",
-                onTap: () => {Get.offNamed(HBRoutes.register)},
+                onTap: _verifyOTP, // 🔒 Validates OTP on button press too
               ),
+
               SizedBox(height: 30.h),
-              TextButtonWithUnderLine(text: 'Resend', onTap: () {}),
+
+              /// Resend Button
+              TextButtonWithUnderLine(
+                text: 'Resend',
+                onTap: () {
+                  Get.snackbar(
+                    "OTP Resent",
+                    "A new verification code was sent.",
+                    backgroundColor: HBColors.primary.withOpacity(0.1),
+                    colorText: HBColors.primary,
+                    icon: const Icon(Icons.send, color: HBColors.primary),
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                },
+              ),
+
               SizedBox(height: 50.h),
-              Container(
-                height: 200.h,
-                width: 180.w,
-                child: Opacity(
-                  opacity: 0.3,
-                  child: Image.asset(
-                    HBImages.lightAppLogo,
-                    height: 100,
-                    width: 100,
-                  ),
+
+              // Faint App Logo
+              Opacity(
+                opacity: 0.3,
+                child: Image.asset(
+                  HBImages.lightAppLogo,
+                  height: 200.h,
+                  width: 180.w,
                 ),
               ),
             ],
