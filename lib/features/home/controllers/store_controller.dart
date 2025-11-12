@@ -64,4 +64,27 @@ class StoreController extends GetxController {
       ),
     ]);
   }
+
+  final RxString searchQuery = ''.obs;
+
+  /// Filtered stores based on search query
+  List<StoreModel> get filteredStores {
+    if (searchQuery.value.isEmpty) return stores;
+    return stores
+        .where(
+          (store) =>
+              store.name.toLowerCase().contains(
+                searchQuery.value.toLowerCase(),
+              ) ||
+              store.category.toLowerCase().contains(
+                searchQuery.value.toLowerCase(),
+              ),
+        )
+        .toList();
+  }
+
+  /// Called when user types in search bar
+  void updateSearch(String query) {
+    searchQuery.value = query;
+  }
 }

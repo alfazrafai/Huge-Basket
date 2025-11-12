@@ -1,17 +1,26 @@
+// lib/common/widgets/card/HBProductCard.dart
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../../utils/constant/colors.dart';
+import '../../../utils/constant/colors.dart';
 import '../../../features/cart/controller/CartController.dart';
 import '../../../features/shop/models/productModel.dart';
 
 class HBProductCard extends StatelessWidget {
   final ProductModel product;
 
-  const HBProductCard({super.key, required this.product});
+  /// 👇 When true, only shows Add / Counter controls
+  final bool showOnlyControls;
 
-  static const int maxQuantity = 5; // ✅ Limit to 5 items
+  const HBProductCard({
+    super.key,
+    required this.product,
+    this.showOnlyControls = false,
+  });
+
+  static const int maxQuantity = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +29,22 @@ class HBProductCard extends StatelessWidget {
     return Obx(() {
       final bool isAdded = product.count.value > 0;
 
+      if (showOnlyControls) {
+        // 🧩 Used in List View → Only show Add/Counter
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 250),
+          transitionBuilder: (child, anim) =>
+              ScaleTransition(scale: anim, child: child),
+          child: isAdded
+              ? _buildCounterBox(product, cartController)
+              : _buildDottedAddButton(product, cartController),
+        );
+      }
+
+      // 🟩 Full Card (Grid View)
       return Stack(
         clipBehavior: Clip.none,
         children: [
-          //  MAIN PRODUCT CARD
           Container(
             width: 160.w,
             margin: EdgeInsets.only(right: 12.w, top: 12.h),
@@ -39,60 +60,53 @@ class HBProductCard extends StatelessWidget {
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                //  IMAGE
-                Center(
-                  child: Image.asset(
-                    product.image,
-                    height: 100.h,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-
-                // TOTAL PRICE + QUANTITY
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Show total price dynamically
-                    Obx(
-                      () => Text(
-                        "₹ ${product.totalPrice.value.toStringAsFixed(2)}"
-                        "${product.count.value > 0 ? "" : ""}",
-                        style: Theme.of(context).textTheme.titleMedium!
-                            .copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                      ),
+            child: Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Image.asset(
+                      product.image,
+                      height: 100.h,
+                      fit: BoxFit.contain,
                     ),
-                    Text(
-                      product.quantity,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.grey.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 6.h),
-
-                // PRODUCT NAME
-                Text(
-                  product.name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
                   ),
-                ),
-              ],
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(
+                        () => Text(
+                          "₹ ${product.totalPrice.value.toStringAsFixed(2)}",
+                          style: Theme.of(context).textTheme.titleMedium!
+                              .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                        ),
+                      ),
+                      Text(
+                        product.quantity,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 6.h),
+                  Text(
+                    product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-
-          // ➕ ADD BUTTON / COUNTER STACKED ON CARD
           Positioned(
             top: 20.h,
             right: 20.w,
@@ -110,10 +124,10 @@ class HBProductCard extends StatelessWidget {
     });
   }
 
-  /// ➕ Dotted “Add” button
+  // ➕ Add Button
   Widget _buildDottedAddButton(
     ProductModel product,
-    CartController cartController,
+    CartController controller,
   ) {
     return GestureDetector(
       onTap: () {
@@ -121,10 +135,9 @@ class HBProductCard extends StatelessWidget {
           _showMaxLimitDialog();
           return;
         }
-
         product.count.value++;
         product.updateTotal();
-        cartController.addProduct(product);
+        controller.addProduct(product);
       },
       child: DottedBorder(
         color: HBColors.primary,
@@ -137,8 +150,8 @@ class HBProductCard extends StatelessWidget {
     );
   }
 
-  /// Vertical counter box
-  Widget _buildCounterBox(ProductModel product, CartController cartController) {
+  // Vertical counter box
+  Widget _buildCounterBox(ProductModel product, CartController controller) {
     return Container(
       key: const ValueKey('counter'),
       height: 90.h,
@@ -151,7 +164,6 @@ class HBProductCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // ➕ Increase quantity
           GestureDetector(
             onTap: () {
               if (product.count.value >= maxQuantity) {
@@ -163,8 +175,6 @@ class HBProductCard extends StatelessWidget {
             },
             child: const Icon(Icons.add, color: HBColors.primary, size: 18),
           ),
-
-          // Quantity
           Text(
             "${product.count.value}",
             style: TextStyle(
@@ -173,8 +183,6 @@ class HBProductCard extends StatelessWidget {
               color: Colors.black87,
             ),
           ),
-
-          //  Decrease or remove
           GestureDetector(
             onTap: () {
               if (product.count.value > 1) {
@@ -183,7 +191,7 @@ class HBProductCard extends StatelessWidget {
               } else {
                 product.count.value = 0;
                 product.updateTotal();
-                cartController.removeProduct(product);
+                controller.removeProduct(product);
               }
             },
             child: Icon(
@@ -199,14 +207,10 @@ class HBProductCard extends StatelessWidget {
     );
   }
 
-  /// 🚫 Max limit dialog
   void _showMaxLimitDialog() {
     Get.defaultDialog(
       title: "Limit Reached",
-      middleText:
-          "You can only add up to $maxQuantity quantities for this item.",
-      titleStyle: const TextStyle(fontWeight: FontWeight.bold),
-      middleTextStyle: const TextStyle(color: Colors.black87),
+      middleText: "You can only add up to $maxQuantity quantities.",
       confirm: ElevatedButton(
         onPressed: () => Get.back(),
         style: ElevatedButton.styleFrom(

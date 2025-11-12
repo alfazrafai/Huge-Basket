@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:huge_basket/common/widgets/HBAppBar.dart';
 import 'package:huge_basket/utils/constant/colors.dart';
-import 'package:iconsax/iconsax.dart';
 import '../../../routes/routes.dart';
 import '../controllers/store_controller.dart';
 
@@ -49,16 +48,51 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
+            /// 🔍 Search Bar
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: TextField(
+                onChanged: storeController.updateSearch,
+                decoration: InputDecoration(
+                  hintText: "Search stores or categories...",
+                  prefixIcon: const Icon(Icons.search, color: Colors.green),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 12.h,
+                    horizontal: 16.w,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.r),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+
             /// 🏬 Store List
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Obx(
-                () => ListView.builder(
+              child: Obx(() {
+                final filteredStores = storeController.filteredStores;
+                if (filteredStores.isEmpty) {
+                  return Padding(
+                    padding: EdgeInsets.only(top: 40.h),
+                    child: const Text(
+                      "No stores found 😕",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: storeController.stores.length,
+                  itemCount: filteredStores.length,
                   itemBuilder: (context, index) {
-                    final store = storeController.stores[index];
+                    final store = filteredStores[index];
                     return GestureDetector(
                       onTap: () => Get.toNamed(HBRoutes.categorySubCategory),
                       child: Container(
@@ -176,8 +210,8 @@ class HomeScreen extends StatelessWidget {
                       ),
                     );
                   },
-                ),
-              ),
+                );
+              }),
             ),
           ],
         ),
