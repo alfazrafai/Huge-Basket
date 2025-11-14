@@ -1,6 +1,6 @@
+// lib/features/shop/controllers/store_controller.dart
 import 'package:get/get.dart';
 import 'package:huge_basket/utils/constant/image_strings.dart';
-
 import '../model/store_model.dart';
 
 class StoreController extends GetxController {
@@ -20,6 +20,7 @@ class StoreController extends GetxController {
         distance: "1 mile",
         address: "3456 Washington Street, Us, 4568",
         image: HBImages.walmartStoreShop,
+        storeHeadingImage: HBImages.walmartBackgroundImage,
         rating: 4.6,
       ),
       StoreModel(
@@ -27,6 +28,8 @@ class StoreController extends GetxController {
         category: "Grocery and General",
         distance: "2 mile",
         address: "3456 Washington Street, Us, 4568",
+        storeHeadingImage: HBImages.walmartBackgroundImage,
+
         image: HBImages.stopAndShop,
         rating: 4.5,
       ),
@@ -35,6 +38,8 @@ class StoreController extends GetxController {
         category: "Grocery",
         distance: "3.5 mile",
         address: "3456 Washington Street, Us, 4568",
+        storeHeadingImage: HBImages.walmartBackgroundImage,
+
         image: HBImages.safeWayStoreShop,
         rating: 4.4,
       ),
@@ -43,6 +48,8 @@ class StoreController extends GetxController {
         category: "Grocery",
         distance: "4 mile",
         address: "3456 Washington Street, Us, 4568",
+        storeHeadingImage: HBImages.walmartBackgroundImage,
+
         image: HBImages.giantFoodStoreShop,
         rating: 4.2,
       ),
@@ -51,6 +58,8 @@ class StoreController extends GetxController {
         category: "Grocery",
         distance: "5 mile",
         address: "3456 Washington Street, Us, 4568",
+        storeHeadingImage: HBImages.walmartBackgroundImage,
+
         image: HBImages.meijerStoreShop,
         rating: 4.7,
       ),
@@ -59,6 +68,8 @@ class StoreController extends GetxController {
         category: "Grocery",
         distance: "5 mile",
         address: "3456 Washington Street, Us, 4568",
+        storeHeadingImage: HBImages.walmartBackgroundImage,
+
         image: HBImages.alfazStoreShop,
         rating: 4.7,
       ),
@@ -67,7 +78,6 @@ class StoreController extends GetxController {
 
   final RxString searchQuery = ''.obs;
 
-  /// Filtered stores based on search query
   List<StoreModel> get filteredStores {
     if (searchQuery.value.isEmpty) return stores;
     return stores
@@ -83,7 +93,6 @@ class StoreController extends GetxController {
         .toList();
   }
 
-  /// Called when user types in search bar
   void updateSearch(String query) {
     searchQuery.value = query;
   }

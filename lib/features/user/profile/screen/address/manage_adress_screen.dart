@@ -5,12 +5,12 @@ import 'package:huge_basket/common/widgets/HBAppBar.dart';
 import 'package:huge_basket/utils/constant/colors.dart';
 import '../../../../../common/widgets/card/HBAddressCard.dart';
 import '../../controller/address_Controller.dart';
+import 'add_address_screen.dart';
 
 class ManageAddressScreen extends StatelessWidget {
   ManageAddressScreen({super.key});
 
   final AddressController controller = Get.put(AddressController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,9 +28,9 @@ class ManageAddressScreen extends StatelessWidget {
         child: Obx(
           () => ListView.builder(
             physics: const BouncingScrollPhysics(),
-            itemCount: controller.addresses.length + 1, // +1 for Add New
+            itemCount: controller.addresses.length + 1,
             itemBuilder: (context, index) {
-              // 🏠 Address Cards
+              // Address Cards
               if (index < controller.addresses.length) {
                 final address = controller.addresses[index];
                 return HBAddressCard(
@@ -40,17 +40,13 @@ class ManageAddressScreen extends StatelessWidget {
                 );
               }
 
-              // ➕ Add New Button (last item)
+              // Add New Button
               return Padding(
                 padding: EdgeInsets.only(top: 4.h, bottom: 16.h),
                 child: Center(
                   child: InkWell(
                     onTap: () {
-                      Get.snackbar(
-                        "Add Address",
-                        "Implement add new address screen",
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
+                      Get.to(() => AddAddressScreen());
                     },
                     borderRadius: BorderRadius.circular(30),
                     child: Row(

@@ -3,8 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:huge_basket/utils/constant/colors.dart';
+
 import '../../../features/user/profile/controller/address_Controller.dart';
 import '../../../features/user/profile/model/address_model.dart';
+import '../../../features/user/profile/screen/address/edit_address_screen.dart';
+//🔥 ADD THIS
 
 class HBAddressCard extends StatelessWidget {
   final AddressModel address;
@@ -77,23 +80,77 @@ class HBAddressCard extends StatelessWidget {
           ),
 
           // Action Buttons (Delete / Change)
+          // Action Buttons (Delete on left / Change on right)
           Row(
             children: [
+              // LEFT → DELETE
               _ActionButton(
                 icon: Iconsax.trash,
                 label: "Delete",
                 color: Colors.red,
                 textColor: Colors.black,
-                onTap: () => controller.deleteAddress(index),
+                onTap: () {
+                  Get.defaultDialog(
+                    title: "Delete Address?",
+                    titleStyle: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.red,
+                    ),
+                    middleText: "Are you sure you want to delete this address?",
+                    middleTextStyle: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.black87,
+                    ),
+                    radius: 12.r,
+                    backgroundColor: Colors.white,
+
+                    // Cancel Button
+                    cancel: ElevatedButton(
+                      onPressed: () => Get.back(),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey.shade300,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+
+                    // Confirm Delete Button
+                    confirm: ElevatedButton(
+                      onPressed: () {
+                        controller.deleteAddress(index);
+                        Get.back();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      child: const Text("Delete"),
+                    ),
+                  );
+                },
               ),
+
+              // Divider
               Container(height: 40.h, width: 1, color: Colors.grey.shade200),
+
+              // RIGHT → EDIT
               _ActionButton(
                 icon: Iconsax.edit_2,
                 label: "Change",
                 color: HBColors.dark,
                 textColor: Colors.black,
                 onTap: () {
-                  Get.snackbar("Edit Address", "Implement edit action");
+                  Get.to(
+                    () => EditAddressScreen(index: index, address: address),
+                  );
                 },
               ),
             ],

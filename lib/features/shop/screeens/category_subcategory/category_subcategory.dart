@@ -1,3 +1,4 @@
+// lib/features/shop/screens/category_subcategory.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,13 +6,13 @@ import 'package:huge_basket/common/widgets/HBAppBar.dart';
 import 'package:huge_basket/common/widgets/image_text/image_with_text.dart';
 import 'package:huge_basket/utils/constant/colors.dart';
 import 'package:iconsax/iconsax.dart';
-
 import '../../../../common/widgets/card/productCard.dart';
 import '../../../../common/widgets/containers/HBPrimaryHeaderContainer.dart';
 import '../../../../common/widgets/images/HBCircleAvatarImage.dart';
 import '../../../../common/widgets/text/title_text_with_more_option.dart';
 import '../../../../common/widgets/textfields/HBSerachTextField.dart';
 import '../../../../utils/constant/image_strings.dart';
+import '../../../home/model/store_model.dart';
 import '../../controller/CategoryController.dart';
 import '../../models/productModel.dart';
 import '../product/subcategory_product_screen.dart';
@@ -21,38 +22,34 @@ class CategorySubcategory extends StatelessWidget {
 
   final CategoryController categoryController = Get.put(CategoryController());
 
-  // final List<Product> products =
-  //     []; // not used here, just keeping for reference
-
   @override
   Widget build(BuildContext context) {
+    // receive the StoreModel passed via Get.arguments
+    final store = Get.arguments as StoreModel;
+
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🟩 Header Section
             HBPrimaryHeaderContainer(
-              image: HBImages.walmartBackgroundImage,
+              image: store.storeHeadingImage,
               height: 0.42,
               child: Column(
                 children: [
                   HBAppBar(
-                    title: "Walmart",
+                    title: store.name,
                     backgroundColor: Colors.transparent,
                     titleColor: Colors.white,
                     iconColor: Colors.white,
-                    showCart: true, // ✅ shows badge
+                    showCart: true,
                   ),
                   SizedBox(height: 10.h),
-                  HBCircleAvatarImage(
-                    image: HBImages.walmartBackgroundImage,
-                    radius: 35.r,
-                  ),
+                  HBCircleAvatarImage(image: store.image, radius: 35.r),
                   SizedBox(height: 10.h),
                   Text(
-                    '3456 Washington Street, Us, 6542',
+                    store.address,
                     style: TextStyle(color: Colors.white, fontSize: 13.sp),
                   ),
                   SizedBox(height: 20.h),
@@ -62,7 +59,9 @@ class CategorySubcategory extends StatelessWidget {
                       color: Colors.white.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(30.r),
                     ),
-                    child: const HBSearchTextField(hintText: 'Search Walmart'),
+                    child: HBSearchTextField(
+                      hintText: 'Search in ${store.name}',
+                    ),
                   ),
                   SizedBox(height: 20.h),
                 ],
@@ -97,9 +96,7 @@ class CategorySubcategory extends StatelessWidget {
                               () => HBImageWithText(
                                 image: category.categoryImage,
                                 categoryName: category.name,
-                                isSelected: category
-                                    .isSelected
-                                    .value, // ✅ direct from model
+                                isSelected: category.isSelected.value,
                                 onTap: () =>
                                     categoryController.changeCategory(category),
                               ),
@@ -126,7 +123,6 @@ class CategorySubcategory extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: selected.subCategories.map((subCat) {
-                      // ✅ if more than one product, show "More >"
                       final hasMore = subCat.products.length > 1;
 
                       return Column(
@@ -134,12 +130,9 @@ class CategorySubcategory extends StatelessWidget {
                         children: [
                           SizedBox(height: 10.h),
 
-                          /// 🧱 Reusable TitleTextWithMoreOption widget
                           TitleTextWithMoreOption(
                             titleName: subCat.name,
-                            moreText: hasMore
-                                ? 'More >'
-                                : null, // hide when not needed
+                            moreText: hasMore ? 'More >' : null,
                             onTap: hasMore
                                 ? () {
                                     Get.to(
@@ -154,16 +147,14 @@ class CategorySubcategory extends StatelessWidget {
 
                           SizedBox(height: 5.h),
 
-                          /// 🧱 Product horizontal list (limit to 5 for preview)
                           SizedBox(
                             height: 220.h,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: subCat.products.length > 5
-                                  ? 6 // show 5 + 1 "More" card
+                                  ? 6
                                   : subCat.products.length,
                               itemBuilder: (context, index) {
-                                // 🧠 If index < 5 → show product card
                                 if (index < 5 &&
                                     index < subCat.products.length) {
                                   final product = subCat.products[index];
@@ -184,7 +175,6 @@ class CategorySubcategory extends StatelessWidget {
                           ),
 
                           SizedBox(height: 20.h),
-
                           SizedBox(height: 20.h),
                         ],
                       );

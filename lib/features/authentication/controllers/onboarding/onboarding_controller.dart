@@ -1,35 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:huge_basket/navigation_bar.dart';
-import '../../screens/login/login_screen.dart';
+import 'package:hive/hive.dart';
+import 'package:huge_basket/features/authentication/screens/login/login_screen.dart';
 
 class OnBoardingController extends GetxController {
   static OnBoardingController get instance => Get.find();
 
-  PageController pageController = PageController();
+  final PageController pageController = PageController();
   RxInt currentIndex = 0.obs;
 
-  void updatePageIndicator(index) => currentIndex.value = index;
+  /// Update dots when user swipes
+  void updatePageIndicator(int index) {
+    currentIndex.value = index;
+  }
 
-  void dotNavigationClick(index) {
+  /// When user taps a dot indicator
+  void dotNavigationClick(int index) {
     currentIndex.value = index;
     pageController.jumpToPage(index);
   }
 
+  /// Next button logic
   void nextPage() {
     if (currentIndex.value == 2) {
-      GetStorage storage = GetStorage();
-      storage.write('IsFirstTime', false);
-      Get.offAll(const LoginScreen());
+      _completeOnBoarding();
     } else {
-      currentIndex.value = currentIndex.value + 1;
+      currentIndex.value++;
       pageController.jumpToPage(currentIndex.value);
     }
   }
 
+  /// Skip button logic
   void skipPage() {
-    currentIndex.value = 2;
-    Get.offAll(const LoginScreen());
+    _completeOnBoarding();
+  }
+
+  /// Save onboarding status in Hive
+  void _completeOnBoarding() {
+    final box = Hive.box('appData');
+    box.put('IsFirstTime', false);
+    Get.offAll(() => const LoginScreen());
   }
 }

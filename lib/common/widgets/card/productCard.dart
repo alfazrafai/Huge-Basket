@@ -154,8 +154,8 @@ class HBProductCard extends StatelessWidget {
   Widget _buildCounterBox(ProductModel product, CartController controller) {
     return Container(
       key: const ValueKey('counter'),
-      height: 90.h,
-      width: 38.w,
+      height: 100.h,
+      width: 33.w,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30.r),
@@ -173,7 +173,7 @@ class HBProductCard extends StatelessWidget {
               product.count.value++;
               product.updateTotal();
             },
-            child: const Icon(Icons.add, color: HBColors.primary, size: 18),
+            child: const Icon(Icons.add, color: HBColors.black, size: 18),
           ),
           Text(
             "${product.count.value}",
@@ -197,7 +197,7 @@ class HBProductCard extends StatelessWidget {
             child: Icon(
               product.count.value > 1 ? Icons.remove : Icons.delete_outline,
               color: product.count.value > 1
-                  ? HBColors.primary
+                  ? HBColors.black
                   : Colors.redAccent,
               size: 18,
             ),

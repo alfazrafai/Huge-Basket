@@ -4,6 +4,7 @@ class StoreModel {
   final String distance;
   final String address;
   final String image;
+  final String storeHeadingImage;
   final double rating;
 
   StoreModel({
@@ -12,6 +13,12 @@ class StoreModel {
     required this.distance,
     required this.address,
     required this.image,
+    required this.storeHeadingImage,
     required this.rating,
   });
+
+  @override
+  String toString() {
+    return 'StoreModel(name: $name, category: $category)';
+  }
 }

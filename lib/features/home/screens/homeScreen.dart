@@ -1,3 +1,4 @@
+// lib/features/shop/screens/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:huge_basket/common/widgets/HBAppBar.dart';
 import 'package:huge_basket/utils/constant/colors.dart';
 import '../../../routes/routes.dart';
 import '../controllers/store_controller.dart';
+import '../model/store_model.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -18,7 +20,6 @@ class HomeScreen extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            /// 🟩 Custom AppBar
             HBAppBar(
               title: "Huge Basket",
               backgroundColor: Colors.transparent,
@@ -29,7 +30,6 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(height: 10.h),
 
-            /// 🕓 Delivery Banner
             Container(
               width: double.infinity,
               margin: EdgeInsets.symmetric(vertical: 10.h),
@@ -48,7 +48,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            /// 🔍 Search Bar
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: TextField(
@@ -72,7 +71,6 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            /// 🏬 Store List
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Obx(() {
@@ -94,7 +92,11 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final store = filteredStores[index];
                     return GestureDetector(
-                      onTap: () => Get.toNamed(HBRoutes.categorySubCategory),
+                      // <-- pass the store as argument
+                      onTap: () => Get.toNamed(
+                        HBRoutes.categorySubCategory,
+                        arguments: store,
+                      ),
                       child: Container(
                         margin: EdgeInsets.only(bottom: 12.h),
                         padding: EdgeInsets.all(12.w),
@@ -112,8 +114,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            /// 🖼️ Store Image with Rating
                             Stack(
+                              clipBehavior: Clip.none,
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
@@ -125,13 +127,15 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Positioned(
-                                  bottom: -1,
-                                  left: 10,
+                                  bottom: -2,
+                                  left: 15,
+
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 6,
                                       vertical: 2,
                                     ),
+                                    height: 20.h,
                                     decoration: BoxDecoration(
                                       color: Colors.green,
                                       borderRadius: BorderRadius.circular(12),
@@ -155,11 +159,11 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                SizedBox(height: 10),
                               ],
                             ),
                             SizedBox(width: 12.w),
 
-                            /// 🏪 Store Info
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +175,7 @@ class HomeScreen extends StatelessWidget {
                                           store.name,
                                           style: const TextStyle(
                                             fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ),

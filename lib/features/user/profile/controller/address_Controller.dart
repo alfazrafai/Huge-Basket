@@ -2,27 +2,46 @@ import 'package:get/get.dart';
 import '../model/address_model.dart';
 
 class AddressController extends GetxController {
-  final RxList<AddressModel> addresses = <AddressModel>[
+  RxList<AddressModel> addresses = <AddressModel>[
     AddressModel(
-      addressLine: "799 Lost Creek Road, Seattle, Fort Washington, Us, 19034",
+      address: "3153 Abia Martin Drive",
+      unit: "3153",
+      city: "Seattle",
+      state: "Washington",
+      zip: "19034",
+      instructions: "Leave at the front porch.",
       isDefault: true,
     ),
     AddressModel(
-      addressLine: "799 Lost Creek Road, Seattle, Fort Washington, Us, 19034",
+      address: "799 Lost Creek Road",
+      unit: "799",
+      city: "Fort Washington",
+      state: "US",
+      zip: "19034",
+      instructions: "Call when arrived.",
+      isDefault: false,
     ),
   ].obs;
 
-  void selectAddress(int index) {
-    for (int i = 0; i < addresses.length; i++) {
-      addresses[i] = addresses[i].copyWith(isDefault: i == index);
-    }
+  // Add Address
+  void addAddress(AddressModel model) {
+    addresses.add(model);
   }
 
+  // Update Address
+  void updateAddress(int index, AddressModel updatedModel) {
+    addresses[index] = updatedModel;
+  }
+
+  // Delete Address
   void deleteAddress(int index) {
     addresses.removeAt(index);
   }
 
-  void addNewAddress(String address) {
-    addresses.add(AddressModel(addressLine: address));
+  // Select default (only 1 default)
+  void selectAddress(int index) {
+    for (int i = 0; i < addresses.length; i++) {
+      addresses[i] = addresses[i].copyWith(isDefault: i == index);
+    }
   }
 }

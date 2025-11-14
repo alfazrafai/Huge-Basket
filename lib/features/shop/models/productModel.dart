@@ -14,10 +14,9 @@ class ProductModel {
     required this.price,
     required this.quantity,
   }) {
-    totalPrice.value = price; // base price shown initially
+    totalPrice.value = price;
   }
 
-  /// 🧮 Update total based on count
   void updateTotal() {
     // ✅ Always show at least 1 * price
     totalPrice.value = (count.value > 0 ? count.value : 1) * price;

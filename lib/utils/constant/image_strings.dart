@@ -45,4 +45,33 @@ class HBImages {
   static const String lactaidWholeMilk = "assets/images/shop/milkWhole.png";
   static const String alfazMilk =
       "assets/images/product/dairy_and_eggs/alfaz_milk.png";
+  static const String amulGold =
+      "assets/images/product/dairy_and_eggs/amul_gold.png";
+  static const String browEggs =
+      "assets/images/product/dairy_and_eggs/brown_eggs.png";
+  static const String sixEggs =
+      "assets/images/product/dairy_and_eggs/six_eggs.png";
+  static const String cheesBlend =
+      "assets/images/product/dairy_and_eggs/cheese_blend.png";
+
+  // snacks
+
+  static const String strawberryCookies =
+      "assets/images/product/snacks/strawberry_cookies.png";
+
+  // seafood
+
+  static const String rawFish = "assets/images/product/seafood/row_fish.png";
+  static const String cutFish = "assets/images/product/seafood/cutted_fish.png";
+  static const String rawZinga = "assets/images/product/seafood/zinga.png";
+  static const String smallZinga =
+      "assets/images/product/seafood/zina_small.png";
+  static const String cuttedZinga =
+      "assets/images/product/seafood/cutted_zinga.png";
+
+  //frozen
+  static const String greenPeas =
+      "assets/images/product/frozen_product/alfaz_frozen_peas.png";
+  static const String malabarParotha =
+      "assets/images/product/frozen_product/malabar_frozen_paratha.png";
 }
