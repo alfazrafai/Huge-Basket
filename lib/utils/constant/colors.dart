@@ -10,6 +10,7 @@ class HBColors {
   static const Color textPrimary = Color(0xFF44B12C);
   static const Color textSecondary = Color(0xFF6C757D);
   static const Color textWhite = Colors.white;
+  static const Color hintText = Color(0xFF999B9C);
   static const Color primaryGrey = Color(0xFFF3F4F6);
 
   // Background colors

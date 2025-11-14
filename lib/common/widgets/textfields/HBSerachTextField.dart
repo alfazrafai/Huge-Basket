@@ -5,7 +5,11 @@ import 'package:iconsax/iconsax.dart';
 import '../../../utils/constant/colors.dart';
 
 class HBSearchTextField extends StatelessWidget {
-  const HBSearchTextField({super.key, required this.hintText});
+  const HBSearchTextField({
+    super.key,
+    required this.hintText,
+    required TextStyle hintStyle,
+  });
 
   final String hintText;
 

@@ -61,6 +61,10 @@ class CategorySubcategory extends StatelessWidget {
                     ),
                     child: HBSearchTextField(
                       hintText: 'Search in ${store.name}',
+                      hintStyle: TextStyle(
+                        color: HBColors.hintText,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                   SizedBox(height: 20.h),
