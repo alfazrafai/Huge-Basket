@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:huge_basket/common/widgets/HBAppBar.dart';
 import '../../controller/address_Controller.dart';
 import '../../widget/address_form.dart';
 
@@ -20,17 +21,20 @@ class EditAddressScreen extends StatelessWidget {
     final controller = Get.find<AddressController>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Address")),
+      appBar: HBAppBar(title: "Edit Address"),
 
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: AddressForm(
-          isEdit: true,
-          initialData: address,
-          onSubmit: (updated) {
-            controller.updateAddress(index, updated);
-            Get.back();
-          },
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: AddressForm(
+            isEdit: true,
+            initialData: address,
+            onSubmit: (updated) {
+              controller.updateAddress(index, updated);
+              Get.back();
+            },
+          ),
         ),
       ),
     );

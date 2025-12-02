@@ -1,47 +1,38 @@
-import 'package:get/get.dart';
-import '../model/address_model.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:huge_basket/features/user/profile/model/address_model.dart';
 
 class AddressController extends GetxController {
-  RxList<AddressModel> addresses = <AddressModel>[
-    AddressModel(
-      address: "3153 Abia Martin Drive",
-      unit: "3153",
-      city: "Seattle",
-      state: "Washington",
-      zip: "19034",
-      instructions: "Leave at the front porch.",
-      isDefault: true,
-    ),
-    AddressModel(
-      address: "799 Lost Creek Road",
-      unit: "799",
-      city: "Fort Washington",
-      state: "US",
-      zip: "19034",
-      instructions: "Call when arrived.",
-      isDefault: false,
-    ),
-  ].obs;
+  final _box = Hive.box<AddressModel>('addresses');
+  RxList<AddressModel> addresses = <AddressModel>[].obs;
 
-  // Add Address
+  @override
+  void onInit() {
+    super.onInit();
+    addresses.value = _box.values.toList();
+  }
+
   void addAddress(AddressModel model) {
+    _box.add(model);
     addresses.add(model);
   }
 
-  // Update Address
-  void updateAddress(int index, AddressModel updatedModel) {
-    addresses[index] = updatedModel;
+  void updateAddress(int index, AddressModel updated) {
+    _box.putAt(index, updated);
+    addresses[index] = updated;
   }
 
-  // Delete Address
   void deleteAddress(int index) {
+    _box.deleteAt(index);
     addresses.removeAt(index);
   }
 
-  // Select default (only 1 default)
-  void selectAddress(int index) {
+  void selectAddress(int selectedIndex) {
     for (int i = 0; i < addresses.length; i++) {
-      addresses[i] = addresses[i].copyWith(isDefault: i == index);
+      final updated = addresses[i].copyWith(isDefault: i == selectedIndex);
+      _box.putAt(i, updated);
+      addresses[i] = updated;
     }
   }
 }

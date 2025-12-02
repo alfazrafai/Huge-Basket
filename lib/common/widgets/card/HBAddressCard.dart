@@ -44,18 +44,21 @@ class HBAddressCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () => controller.selectAddress(index),
-                  child: Icon(
-                    address.isDefault
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_off,
-                    color: address.isDefault
-                        ? HBColors.primary
-                        : Colors.grey.shade400,
-                    size: 22,
-                  ),
-                ),
+                controller.addresses.length > 1
+                    ? GestureDetector(
+                        onTap: () => controller.selectAddress(index),
+                        child: Icon(
+                          address.isDefault
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_off,
+                          color: address.isDefault
+                              ? HBColors.primary
+                              : Colors.grey.shade400,
+                          size: 22,
+                        ),
+                      )
+                    : const SizedBox(),
+
                 SizedBox(width: 10.w),
                 Expanded(
                   child: Text(
@@ -106,33 +109,44 @@ class HBAddressCard extends StatelessWidget {
                     backgroundColor: Colors.white,
 
                     // Cancel Button
-                    cancel: ElevatedButton(
-                      onPressed: () => Get.back(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey.shade300,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    cancel: SizedBox(
+                      height: 40.h,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => Get.back(),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+                          backgroundColor: Colors.grey.shade300,
+                          shape:
+                              const RoundedRectangleBorder(), // 🔥 No rounded corners
+                          elevation: 0,
                         ),
-                      ),
-                      child: const Text(
-                        "Cancel",
-                        style: TextStyle(color: Colors.black),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
 
-                    // Confirm Delete Button
-                    confirm: ElevatedButton(
-                      onPressed: () {
-                        controller.deleteAddress(index);
-                        Get.back();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    // Confirm Delete Button (NO rounded corners)
+                    confirm: SizedBox(
+                      height: 40.h,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          controller.deleteAddress(index);
+                          Get.back();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(0),
+
+                          backgroundColor: Colors.red,
+                          shape:
+                              const RoundedRectangleBorder(), // 🔥 No rounded corners
+                          elevation: 0,
                         ),
+                        child: const Text("Delete"),
                       ),
-                      child: const Text("Delete"),
                     ),
                   );
                 },

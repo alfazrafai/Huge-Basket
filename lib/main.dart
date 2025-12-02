@@ -8,18 +8,26 @@ import 'package:huge_basket/routes/app_routes.dart';
 import 'package:huge_basket/utils/theme/theme.dart';
 import 'features/authentication/screens/login/login_screen.dart';
 import 'features/cart/controller/CartController.dart';
+import 'features/user/profile/model/address_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive
   await Hive.initFlutter();
-  var box = await Hive.openBox('appData');
-
-  // Register Controllers
   Get.put(CartController());
 
-  runApp(HugeBasket(isFirstTime: box.get('IsFirstTime', defaultValue: true)));
+  // Register Hive adapters
+  Hive.registerAdapter(AddressModelAdapter());
+
+  // Open boxes
+  await Hive.openBox('appData'); // <-- For onboarding
+  await Hive.openBox<AddressModel>('addresses'); // <-- For addresses
+
+  // Read onboarding value
+  final appBox = Hive.box('appData');
+  final isFirstTime = appBox.get('IsFirstTime', defaultValue: true);
+
+  runApp(HugeBasket(isFirstTime: isFirstTime));
 }
 
 class HugeBasket extends StatelessWidget {
