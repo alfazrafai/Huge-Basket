@@ -33,14 +33,14 @@ class LoginScreen extends StatelessWidget {
       if (phone.length < 10) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Please enter a valid 10-digit phone number.'),
+            content: Text('Please enter a valid 10-digit mobile number.'),
             backgroundColor: Colors.redAccent,
           ),
         );
         return;
       }
 
-      // Navigator.pushReplacementNamed(context, '/home');
+      // Navigat.pushReplacementNamed(context, '/home');
       Get.offNamed(HBRoutes.phoneVerification);
     }
 
@@ -102,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12.h),
-              HBPrimaryButton(onTap: handleLogin, buttonText: "Login"),
+              HBPrimaryButton(onTap: handleLogin, buttonText: "Loggin"),
             ],
           ),
         ),
